@@ -1,0 +1,89 @@
+# Casual and formal pseudocode practice
+
+# 1. a method that returns the sum of two integers
+
+
+-- Casual --
+Given two integers:
+- save sum of two integers into sum variable
+- return sum variable
+
+
+-- Formal --
+START
+
+# Given two integers "num1" and "num2"
+
+SET sum = num1 + num2
+
+PRINT sum
+
+END
+
+
+# 2. a method that takes an array of strings, and returns a string that is all those strings concatenated together
+
+
+-- Casual --
+Given an array of strings:
+
+Initiate result variable with empty string.
+
+Iterate through the array one by one.
+- concatenate return variable with current string
+
+After iterating, return the result variable.
+
+
+-- Formal --
+START
+
+# Given an array of strings called  "strings"
+
+SET result = ""
+SET iterator = 0
+
+WHILE iterator < length of strings
+  SET result = result + current string value at position "iterator" of "strings"
+  iterator = iterator + 1
+
+PRINT result
+
+END
+
+
+# 3. a method that takes an array of integers, and returns a new array with every other element
+
+
+-- Casual --
+Given an array of integers:
+
+Initiate result variable as empty array.
+
+Iterate through array:
+- based on 0-based indexing, if current index is odd
+  - append result variable with value at current index
+- otherwise, if current index is even
+  - skip to next iteration
+
+After iterating through array, return the result array
+
+-- Formal --
+START
+
+# Given an array of integers called "numbers"
+
+SET result = []
+SET iterator = 0
+
+WHILE iterator < length of numbers
+  IF iterator % 2 == 1
+    append value to result
+  ELSE
+    jump to next iteration
+
+PRINT result 
+
+
+END
+
