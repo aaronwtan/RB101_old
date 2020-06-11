@@ -27,8 +27,16 @@ def prompt(key)
   end
 end
 
-def valid_number?(num)
+def number?(num)
   num =~ /\d/ && num =~ /^\d*\.?\d*$/
+end
+
+def ask_and_validate_number
+  loop do
+    input = gets.chomp
+    if number?(input) then break input.to_f end
+    prompt("invalid_number")
+  end
 end
 
 prompt("welcome")
@@ -42,38 +50,21 @@ loop do
   n = 0
 
   prompt("loan_amount")
-  loop do
-    p = gets.chomp # loan amount
-    break if valid_number?(p)
-    prompt("invalid_number")
-  end
-  p = p.to_f
+  p = ask_and_validate_number # loan amount
 
   prompt("APR")
-  loop do
-    apr = gets.chomp
-    break if valid_number?(apr)
-    prompt("invalid_number")
-  end
-  j_per = apr.to_f / 12 # APR converted to monthly percent rate
+  apr = ask_and_validate_number  # APR as percentage
+  j_per = apr / 12 # APR converted to monthly percent rate
   j = j_per / 100 # monthly rate converted from percentage
 
   loop do
     prompt("loan_years")
-    loop do
-      n_years = gets.chomp # years of loan duration
-      break if valid_number?(n_years)
-      prompt("invalid_number")
-    end
+    n_years = ask_and_validate_number # years of loan duration
 
     prompt("loan_months")
-    loop do
-      n_months = gets.chomp # months of loan duration
-      break if valid_number?(n_months)
-      prompt("invalid_number")
-    end
+    n_months = ask_and_validate_number # months of loan duration
 
-    n = n_years.to_f * 12 + n_months.to_f # total loan duration in months
+    n = n_years * 12 + n_months # total loan duration in months
 
     break unless n == 0.0
     prompt("invalid_term")
