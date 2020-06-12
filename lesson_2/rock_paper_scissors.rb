@@ -2,7 +2,7 @@
 Game flow:
 the user makes a choice
 the computer makes a choice
-the player1_wins is displayed
+the winner is displayed
 =end
 
 VALID_INPUTS = ['rock', 'r',
@@ -138,7 +138,7 @@ loop do
     puts "\n"
 
     round += 1
-    
+
     if player_score == 5
       break player_grand_winner = true
     elsif computer_score == 5
