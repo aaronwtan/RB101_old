@@ -17,6 +17,7 @@ puts crunch('ggggggggggggggg') == 'g'
 puts crunch('a') == 'a'
 puts crunch('') == ''
 
+# Further Exploration using regex
 def regex_crunch(string)
   string.gsub(/(.)\1+/, '\1')
 end
