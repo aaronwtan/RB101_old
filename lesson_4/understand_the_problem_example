@@ -1,0 +1,59 @@
+# Try to work through the "understand the problem" part of this problem on your own,
+# and write the input, output, and rules for it.
+
+# PROBLEM:
+
+# Given a string, write a method `palindrome_substrings` which returns
+# all the substrings from a given string which are palindromes. Consider
+# palindrome words case sensitive.
+
+# Test cases:
+
+# palindrome_substrings("supercalifragilisticexpialidocious") == ["ili"]
+# palindrome_substrings("abcddcbA") == ["bcddcb", "cddc", "dd"]
+# palindrome_substrings("palindrome") == []
+# palindrome_substrings("") == []
+
+# input: string of characters
+# output: array of substrings from input string which are case sensitive palindromes
+
+# - substrings are any strings within the original string, even if they are within a words
+# - return an empty array if there are no palindromes in the given string
+# - will input always be a string? if not, how should non-strings be handled?
+
+# Data structure: array would be useful to convert string to array of its characters, 
+then iterate over length of given string to search for palindromes
+
+# Algorithm:
+# palindrome_substrings method
+#  - initialize a result variable to an empty array
+#  - find all substrings (length 2 or more) of given string (can extract this to a method: substrings)
+#    - for example: substrings('halo') => ['ha', 'hal', 'halo', 'al', 'alo', 'lo']
+#    - starting from the char at index 0 (for ex, 'h'), 
+#        find substrings beginning with that letter: ['ha', 'hal', 'halo']
+#    - move through each character of the string and find the corresponding substrings
+#  - using #substrings method, create an array named substring_arr that contains all of the
+#    substrings of the input string that are at least 2 characters long.
+#  - loop through the words in the substring_arr array.
+#  - if the word is a palindrome, append it to the result
+#    array
+#  - return the result array
+
+# substrings method
+# - create an empty array called `result` that will contain all
+#   the required substrings
+# - initialize variable start_substring_idx and assign 0 to it.
+# - initialize variable end_substring_idx and assign value of
+#   start_substring_idx + 1 to it.
+# - Enter loop which will break when start_substring_idx is equal
+#     to str.size - 1
+#   - Within that loop enter another loop that will break if
+#     end_substring_idx is equal to str.size
+#     - append to the result array part of the string from
+#       start_substring_idx to end_substring_idx
+#     - increment `end_substring_idx` by 1.
+#   - end the inner loop
+#   - increment `start_substring_idx` by 1.
+#   - reassign `end_substring_idx` to `start_substring_idx += 1`
+# - end outer loop
+# - return `result` array
