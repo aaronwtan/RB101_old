@@ -9,8 +9,8 @@
 # to determine leap years both before and after 1752.
 
 def leap_year?(year)
-  (year < 1752 && year % 4 == 0) || 
-  (year % 400 == 0 || (year % 100 != 0 && year % 4 == 0))
+  (year < 1752 && year % 4 == 0) ||
+    (year % 400 == 0 || (year % 100 != 0 && year % 4 == 0))
 end
 
 puts leap_year?(2016) == true

@@ -44,10 +44,10 @@ def off_lights(lights)
 end
 
 def lights_string(lights_array)
-  case lights.size
-  when 1 then "light #{lights[0]} is"
-  when 2 then "lights #{lights[0]} and #{lights[-1]} are"
-  else        "lights #{lights[0...-1].join(', ')}, and #{lights[-1]} are"
+  case lights_array.size
+  when 1 then "light #{lights_array[0]} is"
+  when 2 then "lights #{lights_array[0]} and #{lights_array[-1]} are"
+  else        "lights #{lights_array[0...-1].join(', ')}, and #{lights_array[-1]} are"
   end
 end
 
@@ -65,11 +65,11 @@ end
 
 def get_on_lights(n)
   lights = initialize_lights(n)
-  print_state(lights)
+  print_state(lights) unless n > 10
 
   1.upto(n) do |round|
     lights = toggle_every_nth_light(lights, round)
-    print_state(lights, round)
+    print_state(lights, round) unless n > 10
   end
 
   on_lights(lights)
@@ -77,5 +77,5 @@ end
 
 p get_on_lights(5)
 p get_on_lights(10)
-# p get_on_lights(100)
-# p get_on_lights(1000)
+p get_on_lights(100)
+p get_on_lights(1000)
