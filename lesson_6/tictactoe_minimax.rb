@@ -1,5 +1,5 @@
-# Ruby simulation of the game of Tic-Tac-Toe played against the computer
-# on a standard 3 x 3 board
+# Ruby simulation of the game of Tic-Tac-Toe played
+# against the computer using the minimax algorithm
 # require 'pry'
 
 # uncomment to configure setting for first move
@@ -15,6 +15,8 @@ COMPUTER_MARKER = 'O'
 WINNING_LINES = [[1, 2, 3], [4, 5, 6], [7, 8, 9], # rows
                  [1, 4, 7], [2, 5, 8], [3, 6, 9], # columns
                  [1, 5, 9], [3, 5, 7]]            # diagonals
+
+VALUES = { 'Computer' => 10, 'Player' => -10, 'tie' => 0 }
 
 def prompt(message)
   puts ">> #{message}"
@@ -97,40 +99,66 @@ def player_moves!(board)
   board[move] = PLAYER_MARKER
 end
 
-# rubocop:disable Metrics/MethodLength, Metrics/CyclomaticComplexity
 def computer_moves!(board)
   puts "Computer's turn..."
   sleep 0.5
 
-  move = nil
+  move = find_best_move(board)
+  board[move] = COMPUTER_MARKER
+end
 
-  # prioritize offense if computer can make winning move
-  WINNING_LINES.each do |line|
-    move = find_at_risk_square(board, line, COMPUTER_MARKER)
-    break if move
+def find_best_move(board)
+  best_move = empty_squares(board).first
+  best_value = -Float::INFINITY
+
+  empty_squares(board).each do |move|
+    board[move] = COMPUTER_MARKER
+    move_value = minimax(board, 0, false)
+    board[move] = EMPTY_MARKER
+
+    return empty_squares(board).sample if move_value == Float::INFINITY
+
+    if move_value > best_value
+      best_move = move
+      best_value = move_value
+    end
+  end
+  best_move
+end
+
+# rubocop:disable Metrics/AbcSize, Metrics/MethodLength
+def minimax(board, depth, is_maximizing)
+  return Float::INFINITY if depth > 5
+
+  if someone_won_round?(board)
+    return VALUES[detect_round_winner(board)]
+  elsif board_full?(board)
+    return VALUES['tie']
   end
 
-  # defense
-  if !move
-    WINNING_LINES.each do |line|
-      move = find_at_risk_square(board, line, PLAYER_MARKER)
-      break if move
+  if is_maximizing
+    best_value = -Float::INFINITY
+
+    empty_squares(board).each do |move|
+      board[move] = COMPUTER_MARKER
+      move_value = minimax(board, depth + 1, !is_maximizing) - depth
+      best_value = [move_value, best_value].max
+      board[move] = EMPTY_MARKER
+    end
+  else
+    best_value = Float::INFINITY
+
+    empty_squares(board).each do |move|
+      board[move] = PLAYER_MARKER
+      move_value = minimax(board, depth + 1, !is_maximizing) + depth
+      best_value = [move_value, best_value].min
+      board[move] = EMPTY_MARKER
     end
   end
 
-  # pick square #5 if available
-  if !move && board[5] == EMPTY_MARKER
-    move = 5
-  end
-
-  # if no offensive and defensive move available, pick random square
-  if !move
-    move = empty_squares(board).sample
-  end
-
-  board[move] = COMPUTER_MARKER
+  best_value
 end
-# rubocop:enable Metrics/MethodLength, Metrics/CyclomaticComplexity
+# rubocop:enable Metrics/AbcSize, Metrics/MethodLength
 
 def find_at_risk_square(board, line, marker)
   if line.count { |square| board[square] == marker } == 2
@@ -168,22 +196,22 @@ end
 # start of game
 prompt("Welcome to Tic-Tac-Toe! First to 5 wins!")
 
-# set who goes first based on configuration of FIRST_MOVE
-case FIRST_MOVE
-when 'player'   then first_move = 'player'
-when 'computer' then first_move = 'computer'
-when 'choose'
-  loop do
-    prompt("Who would you like to go first? (#{joinor(PLAYERS)})")
-    first_move = gets.chomp
-    break if PLAYERS.include?(first_move)
-
-    prompt("Invalid choice. Please choose #{joinor(PLAYERS)}.")
-  end
-end
-
 # start of main game loop
 loop do
+  # set who goes first based on configuration of FIRST_MOVE
+  case FIRST_MOVE
+  when 'player'   then first_move = 'player'
+  when 'computer' then first_move = 'computer'
+  when 'choose'
+    loop do
+      prompt("Who would you like to go first? (#{joinor(PLAYERS)})")
+      first_move = gets.chomp
+      break if PLAYERS.include?(first_move)
+
+      prompt("Invalid choice. Please choose #{joinor(PLAYERS)}.")
+    end
+  end
+
   score = { 'Player' => 0, 'Computer' => 0 }
   round = 1
 

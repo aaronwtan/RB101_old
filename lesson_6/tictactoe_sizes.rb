@@ -1,5 +1,5 @@
-# Ruby simulation of the game of Tic-Tac-Toe played against the computer
-# on a standard 3 x 3 board
+# Ruby simulation of the game of Tic-Tac-Toe played against the computer,
+# generalized to user-specified board size
 # require 'pry'
 
 # uncomment to configure setting for first move
